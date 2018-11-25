@@ -15,13 +15,12 @@ export class QuestionsService {
   
   public name: string;
   public question= '';
-
   public answer = '';
   public student: student = {
-    name: '', answers: []
+    name: '1' , answers: {}
   };
-  studentAnswer: student_answer = { question: '', answer: '', grade: -1 };
-  public allStudents: student[] = [this.student];
+  
+  public allStudents: string[] = [];
 
   getQuestions() {
     this.questions = JSON.parse(this.local.getItem('questions'));
@@ -46,49 +45,66 @@ export class QuestionsService {
       this.local.setItem(student.name, JSON.stringify(student) );
     }
     this.local.setItem('students', JSON.stringify(this.allStudents) )
-    console.log('all students', this.local.getItem('students') )
+    console.log('students in storage', JSON.parse(this.local.getItem('students')) )
     console.log('students', this.allStudents);
     console.log('questions', this.questions);
   }
 
   isExistingStudent(name) {
     for(var i = 0; i < this.allStudents.length; i++) {
-      if( this.allStudents[i].name == name ) {
+      if( this.allStudents[i] == name ) {
         return i;
       }
     }
     return false;
   }
 
-  addAnswer(question, answer) {
-    
+  addAnswer(question, answer) { console.log( this.student.answers )
     this.questions = JSON.parse(this.local.getItem('questions'));
+    
     for(var i = 0; i < this.questions.length; i++) {
       
     }// New 
     var studentIndex = this.isExistingStudent(this.name);
-    this.student.name = this.name;
-    this.studentAnswer.question = question;
-    this.studentAnswer.answer = answer;
-    this.student.answers.push( this.studentAnswer );
     if( studentIndex === false ) {
-      this.allStudents.push( this.student )
+      this.allStudents.push( this.name )
+      this.student.name = this.name;
     } else {
-      this.allStudents[ studentIndex ].answers.push( this.studentAnswer );
+      this.student = JSON.parse( this.local.getItem(this.name) )
     }
+    this.student.answers[question] = { answer: answer, grade: -1 } ;
     
     this.updateLocal(this.questions, this.student);
+  }
+
+  getStudent(name) {
+    var student = JSON.parse( this.local.getItem(name) );
+    return student;
+  }
+
+  getAllAnswers() {
+    var student;
+    var answers = [];
+    for(var i = 0; i < this.allStudents.length; i++) {
+      student = this.getStudent( this.allStudents[i] )
+      answers.push(student);
+    }
+    console.log(answers)
+    return answers;
   }
 
   constructor() {
     if(!this.local.getItem('students')) {
     this.local.setItem('students', JSON.stringify(this.allStudents) );
-    this.local.setItem('questions', JSON.stringify(this.questions) )
     } else {
       this.allStudents = JSON.parse(this.local.getItem('students'));
-      this.questions = JSON.parse(this.local.getItem('questions'))
     }
 
+    if(!this.local.getItem('questions')) {
+      this.local.setItem('questions', JSON.stringify(this.questions) )
+      } else {
+        this.questions = JSON.parse(this.local.getItem('questions'))
+      }
     
     
 

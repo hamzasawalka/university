@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 // Custom
 import { QuestionsService } from '../questions.service';
+import { QuestionsComponent } from './questions.component';
 
 
 
@@ -31,9 +32,13 @@ import { QuestionsService } from '../questions.service';
     add() {
         console.log( this.question )
         this.questionsService.addQuestion(this.question);
+        this.questionsComponent.questions =  this.questionsComponent.appComponent.questionsService.getQuestions() ;
     }
   
-    constructor(public questionsService: QuestionsService) {
+    constructor(
+        public questionsService: QuestionsService,
+        public questionsComponent: QuestionsComponent
+        ) {
         
      }
   

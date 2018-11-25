@@ -1,6 +1,6 @@
 <!-- Student Interface -->
 <div *ngIf="isStudent">
-  <h2>Student</h2>
+  <h2>Welcome {{realName}}</h2> 
   <div *ngFor="let answer of getStudent(realName)">
         <div *ngIf="answer.grade != -1">
             <p> {{answer.question}} </p>
@@ -24,15 +24,15 @@
 <div *ngIf="!isStudent">
     
   <h2>Teacher</h2>
-  <div *ngFor="let s of allStudents">
-    <div *ngFor="let a of s.answers" class="answer">
-        <p> {{a.question}} </p>
+  <div *ngFor="let s of questions">
+    <div *ngFor="let a of getKeys(s.answers)" class="answer">
+        <p> {{a}} </p>
       <span><b>{{ s.name }}</b> answered: </span>
       <div>
-        {{ a.answer }}
+        {{ s.answers[a].answer }}
       </div>
-      <app-rating [question]="a.question" [rating]='a.grade' [realName]="s.name" 
-       [name]='a.question + s.name' (ratingClick)='ratingComponentClick($event)'></app-rating>
+      <app-rating [question]="a" [rating]='s.answers[a].grade' [realName]="s.name" 
+       [name]='a + s.name' (ratingClick)='ratingComponentClick($event)'></app-rating>
     </div>
   </div>
 

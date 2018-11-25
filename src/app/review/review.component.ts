@@ -23,21 +23,21 @@ export class ReviewComponent implements OnInit {
   isStudent: boolean;
 
   public name: string = '';
-  public realName: string = '';
+  public realName: string = this.questionsService.name;
+  
   public ratings: any[] = [];
   student;
 
-  public questions = this.appComponent.questionsService.getQuestions();
+  public questions = this.appComponent.questionsService.getAllAnswers();
 
-  // This student
-  public thisAnsweredQuestions = [];
-
-
+  
 
   // All students
   public allStudents = this.questionsService.allStudents;
 
-
+  getKeys(obj) {
+    return Object.keys(obj);
+  }
 
   // Shared functions
   questionExists() {
@@ -53,30 +53,15 @@ export class ReviewComponent implements OnInit {
 
   
 
-  getStudent(name) {
-    var student = this.questionsService.allStudents.find(function(e){
-      return e.name == name;
-    })
-    this.student = student;
-    return student;
-  }
+  
 
   // Teacher functions
   
 
   ratingComponentClick(clickObj: any): void {
-
-    for(var i = 0; i < this.allStudents.length; i++) { 
-      if(this.allStudents[i].name == clickObj.name) {  
-        for(var j = 0; j < this.allStudents[i].answers.length; j++) {
-          if (this.allStudents[i].answers[j].question == clickObj.question ) {
-            this.allStudents[i].answers[j].grade = clickObj.rating;
-            
-          }
-        }
-      }
-    }  
-    this.questionsService.updateLocal(false, false);
+    var student = this.questionsService.getStudent(clickObj.name);
+    student.answers[clickObj.question].grade = clickObj.rating;
+    this.questionsService.updateLocal(false, student);
   }
 
   
