@@ -74,7 +74,7 @@ export class QuestionsService {
         this.answer.name = this.name;
         this.student.name = this.name;
         this.questions[i].answers.push( this.answer );
-      }
+      } 
     }// New 
     var studentIndex = this.isExistingStudent(this.name);
     this.student.name = this.name;
@@ -93,8 +93,10 @@ export class QuestionsService {
   constructor() {
     if(!this.local.getItem('students')) {
     this.local.setItem('students', JSON.stringify(this.allStudents) );
+    this.local.setItem('questions', JSON.stringify(this.questions) )
     } else {
       this.allStudents = JSON.parse(this.local.getItem('students'));
+      this.questions = JSON.parse(this.local.getItem('questions'))
     }
 
     
