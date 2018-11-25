@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
 // Custom
-import { question } from './question-interface';
-import { answer } from './answer-interface';
 import { student } from './student-interface';
 import { student_answer } from './student-answer-interface';
 
@@ -13,15 +11,16 @@ export class QuestionsService {
 
   local: any = localStorage;
 
-  public questions: any[] = [0];
+  public questions: string[] = ['1'];
   
   public name: string;
-  public question: question;
-  public answer: answer;
+  public question= '';
+
+  public answer = '';
   public student: student = {
     name: '', answers: []
   };
-  studentAnswer: student_answer = { answer: '', question: '', grade: -1 };
+  studentAnswer: student_answer = { question: '', answer: '', grade: -1 };
   public allStudents: student[] = [this.student];
 
   getQuestions() {
@@ -31,21 +30,25 @@ export class QuestionsService {
 
   addQuestion(question) {
     this.question = question;
-    this.question.answers = [];
     this.questions = JSON.parse(this.local.getItem('questions'));
-    if(this.questions && this.questions[0] == 0) {
+    if(this.questions && this.questions[0] == '1') {
     this.questions.pop();
     }
     this.questions.push( this.question );
     this.updateLocal(this.questions, false);
   }
 
-  updateLocal(questionsArr, student) {
-    this.local.setItem('questions', JSON.stringify(questionsArr))
+  updateLocal(questions, student) {
+    if(questions) {
+      this.local.setItem('questions', JSON.stringify(questions))
+    }
     if(student) {
       this.local.setItem(student.name, JSON.stringify(student) );
     }
-    console.log( this.local.getItem('students') )
+    this.local.setItem('students', JSON.stringify(this.allStudents) )
+    console.log('all students', this.local.getItem('students') )
+    console.log('students', this.allStudents);
+    console.log('questions', this.questions);
   }
 
   isExistingStudent(name) {
@@ -58,28 +61,15 @@ export class QuestionsService {
   }
 
   addAnswer(question, answer) {
-    console.log(this.allStudents)
+    
     this.questions = JSON.parse(this.local.getItem('questions'));
     for(var i = 0; i < this.questions.length; i++) {
-      if(this.questions[i].question == question) {
-        for(var j = 0; i < this.questions[i].answers.length; j++) {
-          if(this.questions[i].answers[j].name == this.name) {
-            return 'Student already answered';
-          }
-        }
-        if(this.questions[i].answers[0] == 0) {
-        this.questions[i].answers.pop();
-        } // Old
-        this.answer = answer;
-        this.answer.name = this.name;
-        this.student.name = this.name;
-        this.questions[i].answers.push( this.answer );
-      } 
+      
     }// New 
     var studentIndex = this.isExistingStudent(this.name);
     this.student.name = this.name;
     this.studentAnswer.question = question;
-    this.studentAnswer.answer = answer.answer;
+    this.studentAnswer.answer = answer;
     this.student.answers.push( this.studentAnswer );
     if( studentIndex === false ) {
       this.allStudents.push( this.student )

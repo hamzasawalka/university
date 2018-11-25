@@ -25,22 +25,23 @@ export class ReviewComponent implements OnInit {
   public name: string = '';
   public realName: string = '';
   public ratings: any[] = [];
+  student;
 
   public questions = this.appComponent.questionsService.getQuestions();
 
   // This student
   public thisAnsweredQuestions = [];
-  public thisUnansweredQuestions = [];
-  public i: number = 0;
+
+
 
   // All students
-  public answeredQuestions = [];
-  public unansweredQuestions = [];
+  public allStudents = this.questionsService.allStudents;
+
 
 
   // Shared functions
   questionExists() {
-    if (this.questions[0] == 0) {
+    if (this.questions[0] == '1') {
       return false;
     } else {
       return true;
@@ -50,63 +51,35 @@ export class ReviewComponent implements OnInit {
   // Student functions
   
 
-  thisStudentAnswered(answersArr) {
-    for (var i = 0; i < answersArr.length; i++) {
-      if (answersArr[i].name == this.name) {
-        return true;
-      }
-    }
-    return false;
-  }
+  
 
-  splitQuestions() {
-    var answers;
-    var question;
-    for (var i = 0; i < this.questions.length; i++) {
-      answers = this.questions[i].answers;
-      question = this.questions[i];
-      if (answers[0] == 0 || !this.thisStudentAnswered(answers)) {
-        this.thisUnansweredQuestions.push(question);
-      } else {
-        this.thisAnsweredQuestions.push(question);
-      }
-    }
+  getStudent(name) {
+    var student = this.questionsService.allStudents.find(function(e){
+      return e.name == name;
+    })
+    this.student = student;
+    return student;
   }
 
   // Teacher functions
-  findStudentAnswer(question, name) {
-    var q = this.questions.find(((q: any) => q.question === question));
-    var a = q.answers.find( ((a: any) => a.name === name)); 
-    return { question: q.question, answers: a };
-  }
+  
 
   ratingComponentClick(clickObj: any): void {
-    const answer = this.findStudentAnswer(clickObj.question, clickObj.name);
-    if (answer != (undefined || null)) { console.log(answer); 
-      answer.answers.grade = clickObj.rating;
-      this.rating = clickObj.rating;
-      this.name = clickObj.name;
-    }
-    this.questionsService.updateLocal(this.questions, false);
-  }
 
-  splitAllQuestions() {
-    var answers;
-    var question;
-    var answer;
-    for (var i = 0; i < this.questions.length; i++) {
-      answers = this.questions[i].answers;
-      question = this.questions[i];
-      if (answers[0] == 0) {
-        this.unansweredQuestions.push({ question });
-      } else {
-
-        this.answeredQuestions.push(question);
+    for(var i = 0; i < this.allStudents.length; i++) { 
+      if(this.allStudents[i].name == clickObj.name) {  
+        for(var j = 0; j < this.allStudents[i].answers.length; j++) {
+          if (this.allStudents[i].answers[j].question == clickObj.question ) {
+            this.allStudents[i].answers[j].grade = clickObj.rating;
+            
+          }
+        }
       }
-      console.log(this.answeredQuestions)
-      console.log(this.unansweredQuestions)
-    }
+    }  
+    this.questionsService.updateLocal(false, false);
   }
+
+  
 
   getRating(event) {
     console.log(event)
@@ -118,7 +91,7 @@ export class ReviewComponent implements OnInit {
     public appComponent: AppComponent,
     public questionsService: QuestionsService
   ) {
-    this.name = this.questionsService.name;
+    this.realName = this.questionsService.name;
     router.events.subscribe((val) => {
       if (location.path().slice(0, 2) == '/s') {
         this.route = 'student';
@@ -130,10 +103,7 @@ export class ReviewComponent implements OnInit {
       }
     });
 
-    if (this.questionExists()) {
-      this.splitQuestions();
-      this.splitAllQuestions();
-    }
+    
 
   }
 

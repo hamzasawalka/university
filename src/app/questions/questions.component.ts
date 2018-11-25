@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 // Custom
 import { AppComponent } from '../app.component';
-import { answer } from '../answer-interface';
+import { QuestionsService } from '../questions.service';
 
 
 @Component({
@@ -19,22 +19,19 @@ export class QuestionsComponent implements OnInit {
   addQuestion: boolean = false;
 
   name: string = '';
-  answerP: answer;
+  answerP: string = '';
   answer: string;
+  students: any[] = [];
 
   public questions = this.appComponent.questionsService.getQuestions();
 
   constructor(
     location: Location,
     router: Router,
-    public appComponent: AppComponent
+    public appComponent: AppComponent,
+    public questionsService: QuestionsService
   ) {
-    this.answerP = {
-      name: '',
-      answer: '',
-      grade: -1
-    }
-    this.name = this.appComponent.questionsService.name;
+    this.name = this.questionsService.name;
     router.events.subscribe((val) => {
       if (location.path().slice(0, 2) == '/s') {
         this.route = 'student';
@@ -50,7 +47,7 @@ export class QuestionsComponent implements OnInit {
   // Shared
   questionExists() {
     if (this.questions) {
-      if (this.questions[0] != 0) {
+      if (this.questions[0] != '1') {
         return true;
       }
     } else {
@@ -60,10 +57,14 @@ export class QuestionsComponent implements OnInit {
 
   // Student functions
   answeredQuestion(question) {
-    var answers = question.answers;
-    for (var i = 0; i < answers.length; i++) {
-      if (answers[i]["name"] == this.name) {
-        return true;
+    var answers;
+    for (var i = 0; i < this.students.length; i++) {
+      if (this.students[i].name == this.name) {
+        for(var j = 0; j < this.students[i].answers; j++) {
+          if(this.students[i].answers[j].question == question) {
+            return true;
+          }
+        }
       }
     }
     return false;
@@ -84,9 +85,8 @@ export class QuestionsComponent implements OnInit {
   }
 
   submitAnswer(question) {
-    this.answerP.answer = this.answer;
     this.appComponent.questionsService.addAnswer(
-      question, this.answerP
+      question, this.answer
     )
   }
 
@@ -97,6 +97,7 @@ export class QuestionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.students = this.questionsService.allStudents;
   }
 
 }

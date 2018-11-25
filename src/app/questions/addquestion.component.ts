@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 // Custom
 import { QuestionsService } from '../questions.service';
-import { question } from '../question-interface';
+
 
 
 @Component({
@@ -21,10 +21,11 @@ import { question } from '../question-interface';
 
     
     
-    question: question ;
+    question: string = '' ;
 
     type(event: any) {
-        this.question.question = event.target.value;
+        this.question = event.target.value;
+        this.questionsService.question = event.target.value;
     }
 
     add() {
@@ -33,10 +34,7 @@ import { question } from '../question-interface';
     }
   
     constructor(public questionsService: QuestionsService) {
-        this.question={
-            question:'',
-            answers:[],
-        }
+        
      }
   
     ngOnInit() {

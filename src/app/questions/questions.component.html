@@ -5,9 +5,9 @@
     <h3 *ngIf="!nameEntered()">Please Enter your name</h3>
     <div *ngFor="let q of questions" class="question">
       <div *ngIf="!answeredQuestion(q) && nameEntered()">
-        <p>{{q.question}}</p> <br />
+        <p>{{q}}</p> <br />
         <textarea (keyup)="typeAnswer($event)">Enter your answer...</textarea> <br />
-        <button (click)="submitAnswer(q.question)">Submit</button>
+        <button (click)="submitAnswer(q)">Submit</button>
       </div>
 
     </div>
@@ -26,7 +26,7 @@
   <br>
   <div *ngIf="questionExists()">
     <div *ngFor="let q of questions" class="question">
-      <p>{{q.question}}</p>
+      <p>{{q}}</p>
     </div>
   </div>
 
