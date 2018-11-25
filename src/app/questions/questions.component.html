@@ -1,0 +1,33 @@
+<!-- Student Interface -->
+<div *ngIf="isStudent">
+  <h2>Student</h2>
+  <div *ngIf="questionExists()">
+    <h3 *ngIf="!nameEntered()">Please Enter your name</h3>
+    <div *ngFor="let q of questions" class="question">
+      <div *ngIf="!answeredQuestion(q) && nameEntered()">
+        <p>{{q.question}}</p> <br />
+        <textarea (keyup)="typeAnswer($event)">Enter your answer...</textarea> <br />
+        <button (click)="submitAnswer(q.question)">Submit</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Teacher Interface -->
+<div *ngIf="!isStudent">
+  <h2>Teacher</h2>
+
+  <button (click)="clickedAddQuestion()">Add question</button>
+  <add-question *ngIf="addQuestion"></add-question>
+
+  <br>
+  <div *ngIf="questionExists()">
+    <div *ngFor="let q of questions" class="question">
+      <p>{{q.question}}</p>
+    </div>
+  </div>
+
+</div>

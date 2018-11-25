@@ -1,0 +1,40 @@
+<!-- Student Interface -->
+<div *ngIf="isStudent">
+  <h2>Student</h2>
+  <div *ngFor="let question of thisAnsweredQuestions">
+      <div *ngFor="let answer of question.answers" class="answer">
+        <div *ngIf="answer.name == name && answer.grade != -1">
+            <p> {{question.question}} </p>
+            <span><b>{{ answer.name }}</b> answered: {{ answer.answer }}</span>
+            <div> 
+                <span><b>Score: </b>{{answer.grade}}</span>
+                <app-rating [rating]="answer.grade" [realName]="answer.name" 
+                [name]='answer.name + answer.answer'></app-rating>
+
+                
+            </div>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+
+
+<!-- Teacher Interface -->
+<div *ngIf="!isStudent">
+    
+  <h2>Teacher</h2>
+  <div *ngFor="let q of answeredQuestions">
+    <div *ngFor="let a of q.answers" class="answer">
+        <p> {{q.question}} </p>
+      <span><b>{{ a.name }}</b> answered: </span>
+      <div>
+        {{ a.answer }}
+      </div>
+      <app-rating [question]="q.question" [rating]='a.grade' [realName]="a.name" 
+       [name]='q.question + a.name' (ratingClick)='ratingComponentClick($event)'></app-rating>
+    </div>
+  </div>
+
+</div>

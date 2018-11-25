@@ -1,0 +1,10 @@
+div {
+    display: flex;
+    flex-direction: column;
+    width: 400px
+}
+
+.question {
+    background: pink;
+    margin: 5px;
+}
