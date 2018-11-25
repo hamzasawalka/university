@@ -1,5 +1,5 @@
 <div style="text-align:center">
-    <input (keyup)="typeName($event)" type='text' placeholder="Enter Your Name" />
-    <button routerLink="/student/questions">Questions</button>
-    <button routerLink="/student/review">Review</button>
+    <input (keyup)="typeName($event)" type='text' placeholder="Enter Your Name" /><br>
+    <button *ngIf="show" routerLink="/student/questions">Questions</button>
+    <button *ngIf="show" routerLink="/student/review">Review</button>
 </div>
