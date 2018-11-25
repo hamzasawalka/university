@@ -26,8 +26,8 @@ export class ReviewComponent implements OnInit {
   public realName: string = this.questionsService.name;
   
   public ratings: any[] = [];
-  student;
-
+  public student;
+  public answerKeys;
   public questions = this.appComponent.questionsService.getAllAnswers();
 
   
@@ -49,8 +49,11 @@ export class ReviewComponent implements OnInit {
   }
 
   // Student functions
+  public getStudent(name) {
+    var student = this.questionsService.getStudent(name);
+    return student;
+  } 
   
-
   
 
   
@@ -88,7 +91,9 @@ export class ReviewComponent implements OnInit {
       }
     });
 
-    
+    this.student = this.getStudent(this.realName);
+    this.answerKeys = this.getKeys(this.student.answers);
+    console.log(this.realName)
 
   }
 

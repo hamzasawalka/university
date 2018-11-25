@@ -1,38 +1,38 @@
 <!-- Student Interface -->
 <div *ngIf="isStudent">
-  <h2>Welcome {{realName}}</h2> 
-  <div *ngFor="let answer of getStudent(realName)">
-        <div *ngIf="answer.grade != -1">
-            <p> {{answer.question}} </p>
-            <span><b>{{ realName }}</b> answered: {{ answer.answer }}</span>
-            <div> 
-                <span><b>Score: </b>{{answer.grade}}</span>
-                <app-rating [rating]="answer.grade" [realName]="answer.name" 
-                [name]='answer.name + answer.answer'></app-rating>
+  <h2>Welcome {{ realName }}</h2>
+   
+    <div *ngFor="let a of answerKeys" class="answer">
+      <p> {{a}} </p>
+      <span><b>{{ realName }}</b> answered: </span>
+      <div>
+        {{ student.answers[a].answer }}
+      </div>
+      <span><b>Score: </b>{{student.answers[a].grade}}</span>
+      <app-rating [rating]="student.answers[a].grade" [realName]="realName" [name]='realName + student.answers[a].answer'></app-rating>
 
-                
-            </div>
-        </div>
-      
+
+    </div>
   </div>
 
-</div>
+
+
+
 
 
 
 <!-- Teacher Interface -->
 <div *ngIf="!isStudent">
-    
+
   <h2>Teacher</h2>
   <div *ngFor="let s of questions">
     <div *ngFor="let a of getKeys(s.answers)" class="answer">
-        <p> {{a}} </p>
+      <p> {{a}} </p>
       <span><b>{{ s.name }}</b> answered: </span>
       <div>
         {{ s.answers[a].answer }}
       </div>
-      <app-rating [question]="a" [rating]='s.answers[a].grade' [realName]="s.name" 
-       [name]='a + s.name' (ratingClick)='ratingComponentClick($event)'></app-rating>
+      <app-rating [question]="a" [rating]='s.answers[a].grade' [realName]="s.name" [name]='a + s.name' (ratingClick)='ratingComponentClick($event)'></app-rating>
     </div>
   </div>
 
