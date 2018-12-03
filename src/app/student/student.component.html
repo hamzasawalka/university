@@ -1,5 +1,22 @@
 <div style="text-align:center">
-    <input (keyup)="typeName($event)" type='text' placeholder="Enter Your Name" /><br>
+    <form *ngIf="!signUp && !show" [formGroup]="angForm" novalidate><br>
+        <span *ngIf="invalid" class="alert alert-danger">Invalid email or password</span><br><br>
+        <label class="center-block">Email:
+            <input  type='text' formControlName="email" />
+        </label> <br>
+        <label class="center-block">Password:
+            <input type='password' formControlName="pass" />
+        </label>
+        <br>
+        <button (click)="login()" type="submit">Login</button>
+    </form>
+    <br>    
+    <button *ngIf="!signUp" (click)="signUpToggle()">Sign Up</button>
+    <button *ngIf="signUp" (click)="signUpToggle()">Sign In</button>
+
+    <br>
+    <signup *ngIf="signUp"></signup>
+    <br>
     <button *ngIf="show" routerLink="/student/questions">Questions</button>
     <button *ngIf="show" routerLink="/student/review">Review</button>
 </div>

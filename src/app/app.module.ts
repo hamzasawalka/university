@@ -14,6 +14,16 @@ import { StudentComponent } from './student/student.component';
 import { RatingDirective } from './rating.directive';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RatingComponent } from './rating/rating.component';
+import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+import { test } from './test.component';
+import { TeacherComponent } from './teacher/teacher.component';
 
 
 
@@ -26,20 +36,27 @@ import { RatingComponent } from './rating/rating.component';
     AddQuestion,
     RatingDirective,
     RatingComponent,
-    
+    test
     
   ],
   imports: [
     ReactiveFormsModule,
-    
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     TeacherModule,
     StudentModule,
-  
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule, // for database
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    HttpClientModule
   ],
-  providers: [ QuestionsService, StudentComponent ],
+  providers: [ 
+    QuestionsService, 
+    StudentComponent, 
+    TeacherComponent
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

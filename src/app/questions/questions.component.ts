@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 // Custom
 import { AppComponent } from '../app.component';
 import { QuestionsService } from '../questions.service';
+import { StudentComponent } from '../student/student.component';
 
 
 @Component({
@@ -18,20 +19,21 @@ export class QuestionsComponent implements OnInit {
   isStudent: boolean;
   addQuestion: boolean = false;
 
-  name: string = '';
-  answerP: string = '';
   answer: string;
-  students: any[] = [];
+  students;
+  allStudents;
+  student;
 
-  public questions = this.appComponent.questionsService.getQuestions();
+  public questions;
 
   constructor(
     location: Location,
     router: Router,
     public appComponent: AppComponent,
-    public questionsService: QuestionsService
+    public questionsService: QuestionsService,
+    public studentComponent: StudentComponent
   ) {
-    this.name = this.questionsService.name;
+
     router.events.subscribe((val) => {
       if (location.path().slice(0, 2) == '/s') {
         this.route = 'student';
@@ -43,6 +45,10 @@ export class QuestionsComponent implements OnInit {
     });
 
   }
+
+
+
+  
 
   // Shared
   questionExists() {
@@ -56,38 +62,27 @@ export class QuestionsComponent implements OnInit {
   }
 
   // Student functions
-  answeredQuestion(question) {
-    var answers;
-    for (var i = 0; i < this.students.length; i++) {
-      if (this.students[i].name == this.name) {
-        for(var j = 0; j < this.students[i].answers; j++) {
-          if(this.students[i].answers[j].question == question) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  nameEntered() {
-    if (this.name != undefined) {
-      if (this.name.length < 1) {
-        return false;
-      } else {
+  answeredQuestion(question):boolean {
+    
+    var answers = Object.keys(this.student.answers);
+    
+    answers.forEach((element, i) => {
+      if (i == question) {
         return true;
       }
-    }
+    });
+    return false;
   }
 
   typeAnswer(event: any) {
     this.answer = event.target.value;
   }
 
-  submitAnswer(question) {
-    this.appComponent.questionsService.addAnswer(
-      question, this.answer
-    )
+ async submitAnswer(question) {
+    var email = this.student.email;
+    console.log(this.student)
+    this.questionsService.addAnswer(email, question, this.answer)
+    console.log( this.student['answers'] )
   }
 
   // Teacher functions
@@ -96,8 +91,13 @@ export class QuestionsComponent implements OnInit {
     this.addQuestion = !this.addQuestion;
   }
 
-  ngOnInit() {
-    this.students = this.questionsService.allStudents;
+
+
+ async ngOnInit() {
+  this.questions = Object.values(this.questionsService.questions); 
+  this.student = this.questionsService.student;
+  this.students = this.questionsService.students;
+  this.allStudents = this.questionsService.allStudents;
   }
 
 }

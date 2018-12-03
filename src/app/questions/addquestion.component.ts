@@ -32,7 +32,7 @@ import { QuestionsComponent } from './questions.component';
     add() {
         console.log( this.question )
         this.questionsService.addQuestion(this.question);
-        this.questionsComponent.questions =  this.questionsComponent.appComponent.questionsService.getQuestions() ;
+        this.questionsComponent.questions.push(this.question)
     }
   
     constructor(

@@ -5,7 +5,8 @@ import { Router } from '@angular/router';
 // Custom
 import { AppComponent } from '../app.component';
 import { QuestionsService } from '../questions.service';
-
+import { StudentComponent } from '../student/student.component';
+import { TeacherComponent } from '../teacher/teacher.component';
 
 @Component({
   selector: 'app-review',
@@ -24,81 +25,99 @@ export class ReviewComponent implements OnInit {
 
   public name: string = '';
   public realName: string = this.questionsService.name;
-  
+
   public ratings: any[] = [];
   public student;
   public answerKeys;
-  public questions = this.appComponent.questionsService.getAllAnswers();
 
-  
+
+
 
   // All students
-  public allStudents = this.questionsService.allStudents;
+  public students;
+  public allStudents;
+  public questions;
 
   getKeys(obj) {
     return Object.keys(obj);
   }
 
   // Shared functions
-  questionExists() {
-    if (this.questions[0] == '1') {
-      return false;
-    } else {
-      return true;
-    }
-  }
+
+
 
   // Student functions
   public getStudent(name) {
-    var student = this.questionsService.getStudent(name);
-    return student;
-  } 
-  
-  
-
-  
-
-  // Teacher functions
-  
-
-  ratingComponentClick(clickObj: any): void {
-    var student = this.questionsService.getStudent(clickObj.name);
-    student.answers[clickObj.question].grade = clickObj.rating;
-    this.questionsService.updateLocal(false, student);
+    // var student = this.questionsService.getStudent(name);
+    // return student;
   }
 
-  
 
-  getRating(event) {
-    console.log(event)
+
+
+
+  // Teacher functions
+
+
+  ratingComponentClick(clickObj: any): void {
+    let email = clickObj.email;
+    let question = clickObj.question;
+    let score = clickObj.rating;
+    this.questionsService.scoreStudent(email, question, score);
+  }
+
+  getAllStudentKeys() {
+    var keys = [];
+    if (this.students) {
+      var studentKeys = Object.keys(this.students)
+      studentKeys.forEach(e => {
+        if (this.students[e].answers['human']) {
+          delete this.students[e].answers['human'];
+        }
+        keys.push(this.students[e])
+      }); console.log(keys)
+      return keys
+    }
+
   }
 
   ////////////////////
 
-  constructor(location: Location, router: Router,
+  constructor(
+    public location: Location,
+    private router: Router,
     public appComponent: AppComponent,
-    public questionsService: QuestionsService
+    public questionsService: QuestionsService,
+    public studentComponent: StudentComponent,
+    public teacherComponent: TeacherComponent
   ) {
-    this.realName = this.questionsService.name;
-    router.events.subscribe((val) => {
-      if (location.path().slice(0, 2) == '/s') {
+    this.student = this.questionsService.student;
+    this.students = this.questionsService.students;
+    console.log(this.student)
+    this.router.events.subscribe(async (val) => {
+      if (this.location.path().slice(0, 2) == '/s') {
         this.route = 'student';
         this.isStudent = true;
-
-      } else if (location.path().slice(0, 2) == '/t') {
+        this.answerKeys = this.getKeys(this.student.answers);
+      } else if (this.location.path().slice(0, 2) == '/t') {
         this.route = 'teacher';
         this.isStudent = false;
+        this.answerKeys = await this.getAllStudentKeys();
+        console.log(this.answerKeys)
       }
     });
 
-    this.student = this.getStudent(this.realName);
-    this.answerKeys = this.getKeys(this.student.answers);
-    console.log(this.realName)
 
+    this.getAllStudentKeys();
   }
 
   ngOnInit() {
-    
+
+
+
   }
+
+
+
 
 }
