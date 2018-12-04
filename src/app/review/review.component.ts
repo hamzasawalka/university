@@ -39,7 +39,9 @@ export class ReviewComponent implements OnInit {
   public questions;
 
   getKeys(obj) {
-    return Object.keys(obj);
+    if(obj) {
+      return Object.keys(obj);
+    }
   }
 
   // Shared functions
@@ -71,11 +73,11 @@ export class ReviewComponent implements OnInit {
     if (this.students) {
       var studentKeys = Object.keys(this.students)
       studentKeys.forEach(e => {
-        if (this.students[e].answers['human']) {
+        if (this.students[e].answers && this.students[e].answers['human']) {
           delete this.students[e].answers['human'];
         }
         keys.push(this.students[e])
-      }); console.log(keys)
+      }); 
       return keys
     }
 
@@ -93,7 +95,7 @@ export class ReviewComponent implements OnInit {
   ) {
     this.student = this.questionsService.student;
     this.students = this.questionsService.students;
-    console.log(this.student)
+
     this.router.events.subscribe(async (val) => {
       if (this.location.path().slice(0, 2) == '/s') {
         this.route = 'student';
@@ -103,10 +105,8 @@ export class ReviewComponent implements OnInit {
         this.route = 'teacher';
         this.isStudent = false;
         this.answerKeys = await this.getAllStudentKeys();
-        console.log(this.answerKeys)
       }
     });
-
 
     this.getAllStudentKeys();
   }

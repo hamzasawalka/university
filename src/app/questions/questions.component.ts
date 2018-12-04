@@ -44,6 +44,7 @@ export class QuestionsComponent implements OnInit {
       }
     });
 
+    console.log(this.questions)
   }
 
 
@@ -78,7 +79,7 @@ export class QuestionsComponent implements OnInit {
     this.answer = event.target.value;
   }
 
- async submitAnswer(question) {
+  submitAnswer(question) {
     var email = this.student.email;
     console.log(this.student)
     this.questionsService.addAnswer(email, question, this.answer)

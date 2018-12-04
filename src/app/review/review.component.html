@@ -23,21 +23,9 @@
 
 <!-- Teacher Interface -->
 <div *ngIf="!isStudent">
-
-  <h2>Teacher</h2>
-  <div *ngFor="let s of answerKeys">
-    <h3>{{s.name}}</h3>
-    <div *ngFor="let a of getKeys(s.answers)" class="answer">
-      <div *ngIf="a != 'student'">
-      <p> {{a}} </p>
-      <span><b>Answer:</b></span>
-      <div>
-        {{ s.answers[a].answer }}
-      </div> 
-    
-      <app-rating [email]="s.email" [question]="a" [rating]="s.answers[a].score" [realName]="s.name" [name]='a + s.name' (ratingClick)='ratingComponentClick($event)'></app-rating>
-    </div>
-  </div>
-  </div>
+    <h2>Teacher</h2>
+<data-table [studentsObjs]='answerKeys'></data-table>
+  
+  
 
 </div>

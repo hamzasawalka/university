@@ -58,7 +58,7 @@ export class test {
                     $('tbody :nth-child(' + i + ') :first-child').html(),
                     $('tbody :nth-child(' + i + ') :nth-child(2)').html(), 
                     $('tbody :nth-child(' + i + ') :nth-child(3)').html() 
-                            )
+                            ).toString
                 )
          }
                 

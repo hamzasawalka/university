@@ -25,7 +25,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { test } from './test.component';
 import { TeacherComponent } from './teacher/teacher.component';
 
-
+import { DataTablesModule } from 'angular-datatables';
+import { DataTableComponent } from './data-table/data-table.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { TeacherComponent } from './teacher/teacher.component';
     AddQuestion,
     RatingDirective,
     RatingComponent,
-    test
+    test,
+    DataTableComponent
     
   ],
   imports: [
@@ -50,7 +52,9 @@ import { TeacherComponent } from './teacher/teacher.component';
     AngularFireDatabaseModule, // for database
     AngularFirestoreModule,
     AngularFireStorageModule,
-    HttpClientModule
+    HttpClientModule,
+    DataTablesModule,
+    
   ],
   providers: [ 
     QuestionsService, 

@@ -5,23 +5,43 @@ import { QuestionsService } from '../questions.service';
 
 
 
+
 @Component({
-  selector: 'app-teacher',
-  templateUrl: './teacher.component.html',
-  styleUrls: ['./teacher.component.css']
+	selector: 'app-teacher',
+	templateUrl: './teacher.component.html',
+	styleUrls: ['./teacher.component.css']
 })
 export class TeacherComponent implements OnInit {
-  students;
-  allStudents;
+	questions;
+	students;
+	allStudents;
 
-  constructor(
-    public questionsService: QuestionsService) { }
+	constructor(
+		public questionsService: QuestionsService) { }
 
-  
-  
-  ngOnInit() {
-    this.students = this.questionsService.students;
-    this.allStudents = this.questionsService.allStudents; 
-  }
+	try(code: Function, stop: boolean) {
+		const getData = setInterval(() => {
+			code();
+			if (stop) {
+				clearInterval(getData)
+			}
+		}, 500)
+	}
+
+	ngOnInit() {
+
+		this.try(() => {
+			this.questions = this.questionsService.questions
+		},
+			this.questions != undefined
+		);
+
+		this.try(() => {
+			this.students = this.questionsService.students
+		},
+			this.students != undefined
+		)
+
+	}
 
 }

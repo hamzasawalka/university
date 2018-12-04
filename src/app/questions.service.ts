@@ -69,7 +69,7 @@ export class QuestionsService implements OnInit {
 
   addAnswer(email, question, answer) { 
     var stu = database().ref('students/'+email+'/answers/');
-    var answerObj = { question: {answer: answer} }
+    var answerObj = { question: {answer: answer, score: 0} }
     this.renameProperty(answerObj, 'question', question);
     stu.update(answerObj)
     console.log(stu)
@@ -105,12 +105,6 @@ export class QuestionsService implements OnInit {
     
   
     this.getData()
-
-    var that = this
-    setTimeout(function(){
-      console.log(that.students)
-    },4000)
-    
 
     
   }
