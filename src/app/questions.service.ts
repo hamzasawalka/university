@@ -35,6 +35,7 @@ export class QuestionsService implements OnInit {
   
 
   addQuestion(question) {
+    question = question[question.length-1] == '?' ? question : question + '?';
     this.db.list('/questions').push(question);
   }
 

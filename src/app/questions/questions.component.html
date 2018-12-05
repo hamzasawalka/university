@@ -1,5 +1,5 @@
 <!-- Student Interface -->
-<div *ngIf="isStudent">
+<div class="container" *ngIf="isStudent">
   <h2>Student</h2>
 
   <div *ngFor="let q of questions" class="question">
@@ -14,10 +14,10 @@
 
 
 <!-- Teacher Interface -->
-<div *ngIf="!isStudent">
+<div class="container" *ngIf="!isStudent">
   <h2>Teacher</h2>
 
-  <button (click)="clickedAddQuestion()">Add question</button>
+  <button class="add-q btn btn-success" (click)="clickedAddQuestion()">Add question</button>
   <add-question *ngIf="addQuestion"></add-question>
 
   <br>

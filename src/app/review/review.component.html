@@ -24,8 +24,8 @@
 <!-- Teacher Interface -->
 <div *ngIf="!isStudent">
     <h2>Teacher</h2>
-<data-table [studentsObjs]='answerKeys'></data-table>
+<data-table (scoreChange)="displayData($event)" [studentsObjs]='answerKeys'></data-table>
   
-  
+<p *ngIf="data">The teacher changed {{data.name}}'s score from {{data.old}} to {{data.new}}</p>
 
 </div>

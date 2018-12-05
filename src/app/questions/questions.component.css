@@ -5,6 +5,19 @@ div {
 }
 
 .question {
-    background: pink;
-    margin: 5px;
+    background: lightskyblue;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+.container {
+    margin: auto;
+}
+
+.add-q {
+    width: inherit;
+}
+
+h2 {
+    text-align: center;
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
 import * as Tabulator from 'tabulator-tables';
 import { QuestionsService } from '../questions.service';
@@ -8,9 +8,11 @@ import { QuestionsService } from '../questions.service';
   templateUrl: './data-table.component.html',
   styleUrls: ['./data-table.component.css']
 })
-export class DataTableComponent implements OnDestroy, OnInit {
+export class DataTableComponent implements OnInit {
 
   @Input() studentsObjs;
+
+  @Output() scoreChange = new EventEmitter();
 
   constructor(
     public qs: QuestionsService
@@ -36,10 +38,14 @@ export class DataTableComponent implements OnDestroy, OnInit {
     let table = new Tabulator("#example-table", {
       cellEdited: (cell) => {
         if (cell._cell.row.data.question != undefined) {
+          let name = cell._cell.row.modules.dataTree.parent.data.name;
           let email = cell._cell.row.modules.dataTree.parent.data.email;
           let question = cell._cell.row.data.question;
-          let score = cell._cell.row.data.score;
-          that.qs.scoreStudent(email, question, score)
+          let oldScore = cell._cell.oldValue
+          let score = cell._cell.value;
+          // Update database
+          that.qs.scoreStudent(email, question, score);
+          that.scoreChange.emit({ name: name, old: oldScore, new: score });
         }
       },
       layout: "fitColumns",
@@ -67,9 +73,7 @@ export class DataTableComponent implements OnDestroy, OnInit {
     return arr;
   }
 
-  ngOnDestroy(): void {
-
-  }
+  
 
 
 

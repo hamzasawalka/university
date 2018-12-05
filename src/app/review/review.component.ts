@@ -30,7 +30,7 @@ export class ReviewComponent implements OnInit {
   public student;
   public answerKeys;
 
-
+  public data = false;
 
 
   // All students
@@ -59,7 +59,9 @@ export class ReviewComponent implements OnInit {
 
 
   // Teacher functions
-
+  displayData(data) {
+    this.data = data;
+  }
 
   ratingComponentClick(clickObj: any): void {
     let email = clickObj.email;
