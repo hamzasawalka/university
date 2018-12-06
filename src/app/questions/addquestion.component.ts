@@ -9,8 +9,8 @@ import { QuestionsComponent } from './questions.component';
 @Component({
     selector: 'add-question',
     template: `
-    <textarea (keyup)="type($event)" name="question" > </textarea>
-    <button (click)="add()">Add</button>
+    <textarea class="form-control" (keyup)="type($event)" name="question" > </textarea>
+    <button class="btn btn-success" (click)="add()">Add</button>
     `,
     styles: [`
     textarea {

@@ -8,6 +8,7 @@ div {
     background: lightskyblue;
     margin: 5px 0;
     padding: 5px 10px;
+    border-radius: 10px;
 }
 
 .container {
@@ -20,4 +21,12 @@ div {
 
 h2 {
     text-align: center;
+}
+
+.form-control {
+    width: 380px;
+}
+
+p {
+    margin: 0;
 }

@@ -32,15 +32,23 @@ export class QuestionsService implements OnInit {
   public allStudentsObs;
   public allStudents;
 
-  
+  deleteQuestion(question) {
+    let ques = { question: null };
+    this.renameProperty(ques, 'question', question);
+    let ref = database().ref('/questions');
+    ref.update(ques);
+  }
 
   addQuestion(question) {
     question = question[question.length-1] == '?' ? question : question + '?';
-    this.db.list('/questions').push(question);
+    let ques = { question: question };
+    this.renameProperty(ques, 'question', question);
+    let ref = database().ref('/questions');
+    ref.update(ques);
   }
 
   isExistingStudent(email) {
-    for(var i = 0; i < this.students.length; i++) {
+    for(let i = 0; i < this.students.length; i++) {
       if( this.students[i] == email ) {
         return i;
       }
@@ -53,15 +61,15 @@ export class QuestionsService implements OnInit {
     this.student.name = name;
     this.student.email = email;
     this.student.password = pass;
-    var student = { email: this.student };
+    let student = { email: this.student };
     this.renameProperty(student, 'email', email);
-    var ref = database().ref('students/');
+    let ref = database().ref('students/');
     ref.update(student)
     
   }
 
   getStudentKey(email) { 
-    for(var i = 0; i < this.allStudents.length; i++) {
+    for(let i = 0; i < this.allStudents.length; i++) {
       if(this.allStudents[i].email == email) {
         return this.allStudents[i].key;
       }
@@ -69,8 +77,8 @@ export class QuestionsService implements OnInit {
   }
 
   addAnswer(email, question, answer) { 
-    var stu = database().ref('students/'+email+'/answers/');
-    var answerObj = { question: {answer: answer, score: 0} }
+    let stu = database().ref('students/'+email+'/answers/');
+    let answerObj = { question: {answer: answer, score: 0} }
     this.renameProperty(answerObj, 'question', question);
     stu.update(answerObj)
     console.log(stu)
@@ -78,15 +86,15 @@ export class QuestionsService implements OnInit {
 
 
   scoreStudent(email, question, score) {
-    var stu = database().ref('students/'+email+'/answers/'+question+'/');
+    let stu = database().ref('students/'+email+'/answers/'+question+'/');
     stu.update({score: score})
       console.log(stu)
     return stu;
   }
 
   login(email, pass) {
-    var keys = Object.keys(this.students);
-    var login = false;
+    let keys = Object.keys(this.students);
+    let login = false;
     keys.forEach(k => { 
       if(k == email) { console.log('email exists')
         if(this.students[k].password == pass) { console.log('Correct pass')
@@ -124,7 +132,7 @@ export class QuestionsService implements OnInit {
   }
 
   getStudentObjs(){
-    var that = this;
+    let that = this;
     return new Promise((resolve,reject)=>{
      that.studentObs.subscribe(data=>{
        resolve(data);
@@ -133,7 +141,7 @@ export class QuestionsService implements OnInit {
   }
 
   getAllStudents(){
-    var that = this;
+    let that = this;
     return new Promise((resolve,reject)=>{
      that.allStudentsObs.subscribe(data=>{
        resolve(data);
@@ -142,7 +150,7 @@ export class QuestionsService implements OnInit {
   }
 
   getQuestions(){
-    var that = this;
+    let that = this;
     return new Promise((resolve,reject)=>{
       that.questionsObs.subscribe(data=>{
         resolve(data);
@@ -151,7 +159,7 @@ export class QuestionsService implements OnInit {
   }
 
    getData() {
-    var that = this;
+    let that = this;
     database().ref('students/').on('value', snapshot => {
       that.students = snapshot.val(); console.log(snapshot.val())
     });

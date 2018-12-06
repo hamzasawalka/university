@@ -5,8 +5,8 @@
   <div *ngFor="let q of questions" class="question">
     <div *ngIf="!answeredQuestion(q)">
       <p>{{q}}</p> <br />
-      <textarea (keyup)="typeAnswer($event)">Enter your answer...</textarea> <br />
-      <button (click)="submitAnswer(q)">Submit</button>
+      <textarea class="form-control" (keyup)="typeAnswer($event)">Enter your answer...</textarea> <br />
+      <button class="form-control btn btn-primary" (click)="submitAnswer(q)">Submit</button>
     </div>
   </div>
 
@@ -17,13 +17,15 @@
 <div class="container" *ngIf="!isStudent">
   <h2>Teacher</h2>
 
-  <button class="add-q btn btn-success" (click)="clickedAddQuestion()">Add question</button>
+  <button class="add-q btn btn-primary" (click)="clickedAddQuestion()">Add question</button>
   <add-question *ngIf="addQuestion"></add-question>
 
   <br>
   <div *ngIf="questionExists()">
     <div *ngFor="let q of questions" class="question">
-      <p>{{q}}</p>
+      <p>{{ sanitizeQuestion(q) }} 
+        <span (click)="deleteQuestion(q)" class="close">X</span>
+      </p>
     </div>
   </div>
 

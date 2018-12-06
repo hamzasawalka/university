@@ -92,7 +92,17 @@ export class QuestionsComponent implements OnInit {
     this.addQuestion = !this.addQuestion;
   }
 
+  deleteQuestion(question) {
+    let index = this.questions.indexOf(question);
+    this.questions.splice(index, 1)
+    this.questionsService.deleteQuestion(question)
+  }
 
+  sanitizeQuestion(question) {
+    question[question.length - 1] != '?' ? question = question + '?' : question = question;
+    question.length >= 30 ? question = question.slice(0, 30) + '...' : question = question;
+    return question;
+  }
 
  async ngOnInit() {
   this.questions = Object.values(this.questionsService.questions); 
