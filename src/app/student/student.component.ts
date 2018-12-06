@@ -16,9 +16,11 @@ export class StudentComponent implements OnInit {
   public email;
   public pass;
   public name;
+  public student;
 
   public show = false;
   public signUp = false;
+  public signIn = true;
   public invalid = false;
 
   students;
@@ -35,22 +37,22 @@ export class StudentComponent implements OnInit {
     private fb: FormBuilder,
   ) {
     this.createForm();
-
-
   }
 
 
 
   async login() {
-    var email = this.angForm.value.email;
-    var pass = this.angForm.value.pass;
-    var login = await this.questionsService.login(email, pass);
-
-    if (login) {
+    let email = this.angForm.value.email;
+    let pass = this.angForm.value.pass;
+    let login = await this.questionsService.login(email, pass);
+    console.log(login)
+    if (!!login) {
       alert('Success')
       this.show = true;
+      this.student = login;
+      this.signIn = false;
     } else {
-      alert('Invalid username or password')
+      this.invalid = true;
     }
   }
 
@@ -61,9 +63,22 @@ export class StudentComponent implements OnInit {
     });
   }
 
+  logout() {
+    this.questionsService.logOut();
+
+    this.signUp = false;
+    this.signIn = true;
+    console.log( this.signIn )
+  }
+
   ngOnInit() {
     this.students = this.questionsService.students;
-    this.allStudents = this.questionsService.allStudents;
+    this.student = this.questionsService.student;
+    if(this.questionsService.isLoggedIn()) {
+      this.signIn = false;
+    }
+    
+    
   }
 
 }

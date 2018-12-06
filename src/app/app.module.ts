@@ -28,6 +28,7 @@ import { TeacherComponent } from './teacher/teacher.component';
 import { DataTablesModule } from 'angular-datatables';
 import { DataTableComponent } from './data-table/data-table.component';
 
+import { LoginGuard } from './logingaurd';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { DataTableComponent } from './data-table/data-table.component';
   providers: [ 
     QuestionsService, 
     StudentComponent, 
-    TeacherComponent
+    TeacherComponent,
+    LoginGuard
   ],
   bootstrap: [ AppComponent ]
 })

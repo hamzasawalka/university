@@ -1,5 +1,10 @@
 <div style="text-align:center">
-    <form *ngIf="!signUp && !show" [formGroup]="angForm" novalidate><br>
+    <span class="user" *ngIf="!signIn && !signUp">Logged in as: 
+        <span>{{student.name}}  </span>
+        <button (click)="logout()" class="btn btn-danger">logout</button>
+    </span>
+    <div *ngIf="signIn">
+    <form  [formGroup]="angForm" novalidate><br>
         <span *ngIf="invalid" class="alert alert-danger">Invalid email or password</span><br><br>
         <label class="center-block">Email:
             <input  type='text' formControlName="email" />
@@ -10,13 +15,14 @@
         <br>
         <button (click)="login()" type="submit">Login</button>
     </form>
+    </div>
     <br>    
-    <button *ngIf="!signUp" (click)="signUpToggle()">Sign Up</button>
+    <button *ngIf="!signUp && signIn" (click)="signUpToggle()">Sign Up</button>
     <button *ngIf="signUp" (click)="signUpToggle()">Sign In</button>
 
     <br>
     <signup *ngIf="signUp"></signup>
     <br>
-    <button *ngIf="show" class="btn btn-primary" routerLink="/student/questions">Questions</button>
-    <button *ngIf="show" class="btn btn-primary" routerLink="/student/review">Review</button>
+    <button *ngIf="!signIn" class="btn btn-primary" routerLink="/student/questions">Questions</button>
+    <button *ngIf="!signIn" class="btn btn-primary" routerLink="/student/review">Review</button>
 </div>

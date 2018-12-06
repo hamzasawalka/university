@@ -94,15 +94,6 @@ export class signup implements OnInit {
         this.createForm();
     }
 
-     updateStudents(){
-        var that = this;
-        return new Promise( async (resolve,reject) => { 
-            that.questionsService.allStudents = await that.questionsService.getAllStudents();
-            
-            resolve(that.questionsService.allStudents)
-        })
-    }
-
     existingEmail(email){ 
         this.exists = false;
         var that = this;
@@ -134,7 +125,7 @@ export class signup implements OnInit {
     }
 
     ngOnInit() {
-        this.updateStudents().then()
+        
     }
 
 

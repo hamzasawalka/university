@@ -5,3 +5,17 @@ button {
 input {
     margin: 5px;
 }
+
+.user {
+    float: left;
+    margin-left: 10px;
+}
+
+.user button {
+    padding: 0;
+    width: auto;
+}
+
+.user span {
+    color: #007bff;
+}

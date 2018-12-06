@@ -44,12 +44,14 @@ export class QuestionsComponent implements OnInit {
       }
     });
 
+
+
     console.log(this.questions)
   }
 
 
 
-  
+
 
   // Shared
   questionExists() {
@@ -63,16 +65,17 @@ export class QuestionsComponent implements OnInit {
   }
 
   // Student functions
-  answeredQuestion(question):boolean {
-    
-    var answers = Object.keys(this.student.answers);
-    
-    answers.forEach((element, i) => {
-      if (i == question) {
-        return true;
-      }
-    });
-    return false;
+  answeredQuestion(question): boolean {
+    let answered = false;
+    if(!!this.student){
+      var answers = Object.keys(this.student.answers);
+      answers.forEach((element, i) => {
+        if (i == question) {
+          answered = true;
+        }
+      });
+    }
+    return answered;
   }
 
   typeAnswer(event: any) {
@@ -83,7 +86,7 @@ export class QuestionsComponent implements OnInit {
     var email = this.student.email;
     console.log(this.student)
     this.questionsService.addAnswer(email, question, this.answer)
-    console.log( this.student['answers'] )
+    console.log(this.student['answers'])
   }
 
   // Teacher functions
@@ -104,11 +107,12 @@ export class QuestionsComponent implements OnInit {
     return question;
   }
 
- async ngOnInit() {
-  this.questions = Object.values(this.questionsService.questions); 
-  this.student = this.questionsService.student;
-  this.students = this.questionsService.students;
-  this.allStudents = this.questionsService.allStudents;
+  async ngOnInit() {
+    
+      this.questions = await this.questionsService.getQuestions().then(qs => qs)
+      this.students = await this.questionsService.getStudents().then(st => st)
+      
+
   }
 
 }

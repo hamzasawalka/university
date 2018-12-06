@@ -70,7 +70,7 @@ export class ReviewComponent implements OnInit {
     this.questionsService.scoreStudent(email, question, score);
   }
 
-  getAllStudentKeys() {
+  getAllStudents() {
     var keys = [];
     if (this.students) {
       var studentKeys = Object.keys(this.students)
@@ -82,7 +82,6 @@ export class ReviewComponent implements OnInit {
       }); 
       return keys
     }
-
   }
 
   ////////////////////
@@ -106,11 +105,11 @@ export class ReviewComponent implements OnInit {
       } else if (this.location.path().slice(0, 2) == '/t') {
         this.route = 'teacher';
         this.isStudent = false;
-        this.answerKeys = await this.getAllStudentKeys();
+        this.answerKeys = await this.getAllStudents();
       }
     });
 
-    this.getAllStudentKeys();
+    this.getAllStudents();
   }
 
   ngOnInit() {
